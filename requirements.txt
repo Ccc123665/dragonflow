@@ -1,0 +1,9 @@
+PyQt6>=6.5
+PyQt6-WebEngine>=6.5
+pyinstaller>=6.0
+
+# 内容流水线（公众号转图文 / 文案转短视频）需要
+Pillow>=10.0            # 出图与视频逐帧渲染
+requests>=2.31          # 抓取公众号文章
+edge-tts>=6.1           # AI 口播（需联网）
+imageio-ffmpeg>=0.4.9   # 自带 ffmpeg 二进制，免单独安装（视频编码用）

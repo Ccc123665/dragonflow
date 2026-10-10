@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------- 构建产物
+# 注意：build/ 里的 spec 与 make_icns.py 是构建配置，必须入库，
+# 所以用 build/* + 白名单，而不是整个 build/ 忽略。
+build/*
+!build/dragonflow.spec
+!build/dragonflow-macos.spec
+!build/make_icns.py
+build-share/
+dist/
+dist-share/
+*.spec.bak
+
+# 可执行文件 / 安装包（体积超 GitHub 100MB 限制，改走 Release 附件）
+*.exe
+*.dmg
+*.pkg
+*.app/
+
+# ---------------------------------------------------------------- Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ---------------------------------------------------------------- 测试与缓存
+.pytest_cache/
+.coverage
+htmlcov/
+tests/_shots/
+tests/_magazine_preview/
+tests/_video_preview/
+
+# ---------------------------------------------------------------- 运行时数据
+# 账号 / 登录态 / 素材库 / 产出，一律不进库
+accounts.json*
+settings.json*
+skills_user.json*
+platforms_user.json*
+library.json*
+records.json*
+forbidden_user.json*
+profiles/
+library/
+output/
+fail-shots/
+*.log
+
+# ---------------------------------------------------------------- 编辑器 / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------- 工具私有目录
+.workbuddy-ai/
+.workbuddy/
+dist-mac/

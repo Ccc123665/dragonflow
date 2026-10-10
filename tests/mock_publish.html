@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>模拟发布页（小红书结构）</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; margin: 0; padding: 24px; background:#fff; }
+  .wrap { max-width: 720px; }
+  input.d-text { width: 100%; height: 40px; font-size: 16px; border:1px solid #ddd;
+                 border-radius:6px; padding:0 10px; box-sizing:border-box; }
+  .content-input { margin-top:16px; border:1px solid #ddd; border-radius:6px; min-height:180px; }
+  .ql-editor { min-height:180px; padding:12px; outline:none; font-size:14px; line-height:1.7;
+               white-space: pre-wrap; }
+  .creator-tab { display:inline-block; padding:6px 14px; margin-right:8px; cursor:pointer;
+                 border:1px solid #ddd; border-radius:6px; }
+  .creator-tab.active { background:#ffe9e9; border-color:#e0443a; color:#e0443a; }
+  button.d-button { margin-top:16px; padding:9px 22px; border:none; border-radius:6px;
+                    background:#e0443a; color:#fff; font-size:14px; cursor:pointer; }
+  button.d-button:disabled { background:#ccc; cursor:not-allowed; }
+  .publish-topic-list { display:none; border:1px solid #ddd; border-radius:6px; margin-top:4px; }
+  .publish-topic-list.show { display:block; }
+  .publish-topic-list .item { padding:6px 10px; cursor:pointer; }
+  .publish-topic-list .item:hover { background:#f4f5f7; }
+  #log { margin-top:20px; font-size:12px; color:#666; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <span class="creator-tab active" id="tab-image">上传图文</span>
+    <span class="creator-tab" id="tab-video">上传视频</span>
+  </div>
+
+  <div style="margin-top:14px">
+    <input class="d-text" placeholder="填写标题会有更多赞哦～" maxlength="20">
+  </div>
+
+  <div class="content-input">
+    <div class="ql-editor" contenteditable="true" data-placeholder="输入正文描述"></div>
+  </div>
+  <div class="publish-topic-list" id="topics"></div>
+
+  <input type="file" id="file" style="display:none">
+  <button class="d-button primary" id="submit" disabled>发布</button>
+
+  <div id="log"></div>
+</div>
+
+<script>
+/* ---- 模拟 React 受控输入（按 React inputValueTracking 的真实实现）----
+   React 会在元素实例上定义自己的 value 存取器：
+     get → 委托给原生 getter
+     set → 记录 tracker，再委托给原生 setter
+   React 的 onChange 靠「tracker 记录值 ≠ 当前 DOM 值」来判定，
+   所以「绕过实例存取器、直接调原型上的原生 setter」正是让它触发的方式。
+   这里 1:1 还原这个结构来验证适配器。 */
+(function () {
+  var input = document.querySelector('input.d-text');
+  var proto = Object.getPrototypeOf(input);
+  var nativeDesc = Object.getOwnPropertyDescriptor(proto, 'value');
+
+  window.__reactTracker = '' + input.value;
+
+  Object.defineProperty(input, 'value', {
+    configurable: true,
+    get: function () { return nativeDesc.get.call(this); },
+    set: function (v) {
+      window.__reactTracker = '' + v;      // React 记录它看到的最后一次值
+      nativeDesc.set.call(this, v);
+    }
+  });
+})();
+
+var events = [];
+document.querySelector('input.d-text').addEventListener('input', function () {
+  events.push('title:input');
+});
+document.querySelector('input.d-text').addEventListener('change', function () {
+  events.push('title:change');
+});
+
+var editor = document.querySelector('.ql-editor');
+editor.addEventListener('input', function () { events.push('editor:input'); });
+editor.addEventListener('change', function () { events.push('editor:change'); });
+
+/* 输入 # 时弹话题下拉，模拟平台联想 */
+editor.addEventListener('input', function () {
+  var txt = editor.innerText || '';
+  var m = txt.match(/#([^\s#]*)$/);
+  var box = document.getElementById('topics');
+  if (m && m[1]) {
+    box.innerHTML = '<div class="item">#' + m[1] + '</div>' +
+                    '<div class="item">#' + m[1] + '备考</div>';
+    box.className = 'publish-topic-list show';
+  } else {
+    box.className = 'publish-topic-list';
+  }
+});
+
+document.getElementById('tab-image').addEventListener('click', function () {
+  document.getElementById('tab-image').className = 'creator-tab active';
+  document.getElementById('tab-video').className = 'creator-tab';
+  window.__tab = 'image';
+});
+document.getElementById('tab-video').addEventListener('click', function () {
+  document.getElementById('tab-video').className = 'creator-tab active';
+  document.getElementById('tab-image').className = 'creator-tab';
+  window.__tab = 'video';
+});
+
+var submit = document.getElementById('submit');
+submit.addEventListener('click', function () { window.__submitted = true; });
+
+/* 正文有内容就放开发布按钮（模拟平台的完整性校验） */
+setInterval(function () {
+  var t = (editor.innerText || '').trim();
+  submit.disabled = t.length < 5;
+}, 200);
+
+window.__events = events;
+window.__getState = function () {
+  var inp = document.querySelector('input.d-text');
+  var nativeDesc = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(inp), 'value');
+  var domNative = nativeDesc.get.call(inp);
+  return {
+    title: inp.value,
+    titleDomNative: domNative,
+    reactTracker: window.__reactTracker,
+    /* React 判定 onChange 的依据：tracker 记录值 ≠ 当前真实 DOM 值 */
+    reactWouldFireOnChange: domNative !== window.__reactTracker,
+    body: document.querySelector('.ql-editor').innerText,
+    bodyHTML: document.querySelector('.ql-editor').innerHTML,
+    submitDisabled: document.getElementById('submit').disabled,
+    submitted: !!window.__submitted,
+    events: events,
+    titleInputFired: events.indexOf('title:input') >= 0,
+    titleChangeFired: events.indexOf('title:change') >= 0,
+    tab: window.__tab || 'image'
+  };
+};
+</script>
+</body>
+</html>

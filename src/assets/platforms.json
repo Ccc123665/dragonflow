@@ -1,0 +1,225 @@
+{
+  "version": 1,
+  "note": "平台定义。新增平台只需在此追加一项，并在 assets/adapters/ 下补一个同名 JS 适配脚本，无需改主程序。 rules 是发布前体检用的字段规则，数值为经验参考值，可直接改这里调整。",
+  "platforms": [
+    {
+      "key": "xhs",
+      "name": "小红书",
+      "short": "红",
+      "color": "#E0443A",
+      "login_url": "https://creator.xiaohongshu.com/login",
+      "home_url": "https://creator.xiaohongshu.com/",
+      "publish_url": "https://creator.xiaohongshu.com/publish/publish?from=menu_left&target=image",
+      "publish_url_video": "https://creator.xiaohongshu.com/publish/publish?from=menu_left&target=video",
+      "upload_dir_field": "image_hint",
+      "content_types": [
+        "图文",
+        "视频"
+      ],
+      "adapter": "xhs.js",
+      "submit_confirm": true,
+      "enabled": true,
+      "order": 1,
+      "rules": {
+        "title": {
+          "min": 6,
+          "max": 20,
+          "label": "标题"
+        },
+        "body": {
+          "min": 60,
+          "max": 1000,
+          "label": "正文"
+        },
+        "topics": {
+          "min": 3,
+          "max": 10,
+          "label": "话题标签"
+        },
+        "cover": {
+          "max": 12,
+          "label": "封面文案"
+        },
+        "images": {
+          "min": 1,
+          "max": 18,
+          "label": "配图"
+        },
+        "ban_phrases": [
+          "公众号",
+          "微信",
+          "加V",
+          "加v",
+          "私信我",
+          "点击链接",
+          "淘宝",
+          "天猫"
+        ],
+        "ban_links": true
+      }
+    },
+    {
+      "key": "douyin",
+      "name": "抖音",
+      "short": "抖",
+      "color": "#1C1C1E",
+      "login_url": "https://creator.douyin.com/",
+      "home_url": "https://creator.douyin.com/creator-micro/home",
+      "publish_url": "https://creator.douyin.com/creator-micro/content/upload",
+      "content_types": [
+        "视频",
+        "图文"
+      ],
+      "adapter": "douyin.js",
+      "submit_confirm": true,
+      "enabled": true,
+      "order": 2,
+      "rules": {
+        "title": {
+          "min": 4,
+          "max": 55,
+          "label": "作品描述"
+        },
+        "body": {
+          "min": 10,
+          "max": 1000,
+          "label": "口播稿"
+        },
+        "topics": {
+          "min": 2,
+          "max": 5,
+          "label": "话题标签"
+        },
+        "ban_phrases": [
+          "公众号",
+          "加V",
+          "加v",
+          "私信我",
+          "微信"
+        ],
+        "ban_links": true
+      }
+    },
+    {
+      "key": "sph",
+      "name": "视频号",
+      "short": "视",
+      "color": "#2F9E68",
+      "login_url": "https://channels.weixin.qq.com/login.html",
+      "home_url": "https://channels.weixin.qq.com/platform",
+      "publish_url": "https://channels.weixin.qq.com/platform/post/create",
+      "content_types": [
+        "视频",
+        "图文"
+      ],
+      "adapter": "sph.js",
+      "submit_confirm": true,
+      "enabled": true,
+      "order": 3,
+      "rules": {
+        "title": {
+          "min": 4,
+          "max": 16,
+          "label": "短标题"
+        },
+        "body": {
+          "min": 10,
+          "max": 1000,
+          "label": "描述"
+        },
+        "topics": {
+          "min": 1,
+          "max": 10,
+          "label": "话题标签"
+        },
+        "ban_phrases": [
+          "公众号",
+          "加V",
+          "私信我"
+        ],
+        "ban_links": true
+      }
+    },
+    {
+      "key": "gzh",
+      "name": "公众号",
+      "short": "公",
+      "color": "#3E9E4E",
+      "login_url": "https://mp.weixin.qq.com/",
+      "home_url": "https://mp.weixin.qq.com/",
+      "publish_url": "https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit_v2&action=edit&isNew=1&type=10&lang=zh_CN",
+      "content_types": [
+        "长图文"
+      ],
+      "adapter": "gzh.js",
+      "submit_confirm": true,
+      "draft_only": true,
+      "enabled": true,
+      "order": 4,
+      "note": "公众号发布即群发，一天一次且不可撤回。本平台只填充内容并保存草稿，不自动提交，需人工到后台确认群发。",
+      "rules": {
+        "title": {
+          "min": 5,
+          "max": 64,
+          "label": "标题"
+        },
+        "digest": {
+          "min": 10,
+          "max": 120,
+          "label": "摘要"
+        },
+        "body": {
+          "min": 300,
+          "max": 20000,
+          "label": "正文"
+        },
+        "topics": {
+          "max": 0,
+          "label": "话题标签"
+        },
+        "ban_phrases": [],
+        "ban_links": false
+      }
+    },
+    {
+      "key": "toutiao",
+      "name": "头条号",
+      "short": "头",
+      "color": "#D9534F",
+      "login_url": "https://mp.toutiao.com/auth/page/login",
+      "home_url": "https://mp.toutiao.com/profile_v4/index",
+      "publish_url": "https://mp.toutiao.com/profile_v4/graphic/publish",
+      "content_types": [
+        "长图文",
+        "图文"
+      ],
+      "adapter": "toutiao.js",
+      "submit_confirm": true,
+      "enabled": true,
+      "order": 5,
+      "rules": {
+        "title": {
+          "min": 5,
+          "max": 30,
+          "label": "标题"
+        },
+        "body": {
+          "min": 100,
+          "max": 8000,
+          "label": "正文"
+        },
+        "topics": {
+          "min": 0,
+          "max": 10,
+          "label": "话题标签"
+        },
+        "ban_phrases": [
+          "公众号",
+          "加V",
+          "微信"
+        ],
+        "ban_links": true
+      }
+    }
+  ]
+}

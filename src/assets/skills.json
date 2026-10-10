@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "note": "内置 Skill 模板库。prompt 中可用占位符：{topic} 选题、{persona} 账号人设、{audience} 目标人群、{hook} 开头钩子、{tone} 语气、{case} 案例素材、{cta} 结尾引导、{extra} 补充要求。变量槽位用于结构级防同质化。 kind=pipeline 的模板由 src/pipelines/ 下的运行器执行，不是单次模型调用。",
+  "variables": {
+    "persona": [
+      "深耕公考十年的教研老师",
+      "上岸三年的体制内学姐",
+      "带过 2000+ 学员的备考规划师",
+      "省考一次上岸的过来人"
+    ],
+    "audience": [
+      "在职备考的上班族",
+      "应届毕业生",
+      "二战三战的老考生",
+      "零基础小白"
+    ],
+    "hook": [
+      "用一个反常识结论开场",
+      "用一个真实学员案例开场",
+      "用一句扎心的大实话开场",
+      "用一个具体数字开场",
+      "用一个提问开场"
+    ],
+    "tone": [
+      "干货直给，不绕弯",
+      "像朋友聊天一样轻松",
+      "专业严谨，有理有据",
+      "带点自嘲的幽默"
+    ],
+    "case": [
+      "用一次模考成绩的对比",
+      "用备考时间线的变化",
+      "用一道典型真题的拆解",
+      "用学员的私信提问"
+    ],
+    "cta": [
+      "引导评论区留言领取资料",
+      "引导点收藏方便回看",
+      "引导关注获取后续更新",
+      "引导私信咨询备考规划"
+    ]
+  },
+  "skills": [
+    {
+      "id": "xhs_from_gzh_dark",
+      "name": "公众号链接转小红书图文（深蓝商务）",
+      "platform": "xhs",
+      "content_type": "图文",
+      "kind": "pipeline",
+      "pipeline": "gzh_to_xhs",
+      "builtin": true,
+      "locked": true,
+      "desc": "流水线：贴一个公众号文章链接 → 抓原文 → 生成文案 → 出 8 张 1080×1440 竖版配图（深蓝渐变商务版式）",
+      "fields": [
+        "title",
+        "body",
+        "topics",
+        "cover",
+        "image_hint"
+      ],
+      "limits": {
+        "title": 20,
+        "body": 900,
+        "topics": 10
+      },
+      "system": "",
+      "prompt": "（这条是流水线模板，参数在弹窗里填，不走单次模型生成）"
+    },
+    {
+      "id": "xhs_from_gzh_both",
+      "name": "公众号链接转图文 + 短视频",
+      "platform": "xhs",
+      "content_type": "图文 + 短视频",
+      "kind": "pipeline",
+      "pipeline": "gzh_to_both",
+      "builtin": true,
+      "locked": true,
+      "desc": "流水线：一条公众号链接 → 小红书文案 + 8 张配图 + 一条 9:16 竖屏短视频（用同一份文案）",
+      "fields": [
+        "title",
+        "body",
+        "topics",
+        "cover",
+        "image_hint",
+        "shot_hint"
+      ],
+      "limits": {},
+      "system": "",
+      "prompt": "（这条是流水线模板，参数在能力卡片里填，不走单次模型生成）"
+    }
+  ]
+}
