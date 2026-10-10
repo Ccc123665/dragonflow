@@ -8,6 +8,26 @@
 
 ---
 
+## 下载安装
+
+安装包体积较大，统一放在 **[Releases](https://github.com/Ccc123665/dragonflow/releases/latest)** 附件区（不进 git 仓库）。按你的系统选一个：
+
+| 你的系统 | 下载哪个 | 说明 |
+|---|---|---|
+| **Windows 10 / 11** | [`DragonFlow-1.7.0-Windows-x64.exe`](https://github.com/Ccc123665/dragonflow/releases/download/v1.7.0/DragonFlow-1.7.0-Windows-x64.exe) | 单文件免安装，双击即用（约 200 MB） |
+| **Mac · Apple Silicon**<br>（M1 / M2 / M3 / M4） | [`DragonFlow-macos-arm64.dmg`](https://github.com/Ccc123665/dragonflow/releases/download/v1.7.0/DragonFlow-macos-arm64.dmg) | 免安装 App，拖进「应用程序」即可 |
+| **Mac · Intel** | [`DragonFlow-macos-x86_64.dmg`](https://github.com/Ccc123665/dragonflow/releases/download/v1.7.0/DragonFlow-macos-x86_64.dmg) | 同上，Intel 芯片机型 |
+| **Mac · 源码包**（备选） | [`DragonFlow-1.7.0-macOS-source-kit.zip`](https://github.com/Ccc123665/dragonflow/releases/download/v1.7.0/DragonFlow-1.7.0-macOS-source-kit.zip) | 解压双击 `启动.command`，本机自动装依赖。**不会被 Gatekeeper 拦**，最省事 |
+
+> **Mac 首次打开被拦？** App 未做代码签名，首次运行需放行一次：
+> 右键点 App →「打开」→ 再点「打开」；或执行
+> `xattr -dr com.apple.quarantine /Applications/DragonFlow.app`。
+> 嫌麻烦就直接用**源码包**那版。
+
+各平台版本与发布说明见 **[全部 Releases](https://github.com/Ccc123665/dragonflow/releases)**。
+
+---
+
 ## 一、它做什么，不做什么
 
 **做：**
